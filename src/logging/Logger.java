@@ -1,3 +1,5 @@
+package logging;
+
 public class Logger {
     public static void dbg(String msg) {
         log('D', msg, Colour.PURPLE);

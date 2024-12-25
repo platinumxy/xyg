@@ -1,3 +1,5 @@
+package commands.init;
+
 public enum InitResult {
     SUCCESS,
     INVALID_PERMISSIONS,
