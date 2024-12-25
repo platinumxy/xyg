@@ -2,27 +2,27 @@ package logging;
 
 public class Logger {
     public static void dbg(String msg) {
-        log('D', msg, Colour.PURPLE);
+        formatedLog('D', msg, Colour.PURPLE);
     }
     public static void info(String msg) {
-        log('I', msg, Colour.BLUE);
+        formatedLog('I', msg, Colour.BLUE);
     }
 
     public static void success(String msg) {
-        log('S', msg, Colour.GREEN);
+        formatedLog('S', msg, Colour.GREEN);
     }
 
     public static void warn(String msg) {
-        log('W', msg, Colour.ORANGE);
+        formatedLog('W', msg, Colour.ORANGE);
     }
     public static void error(String msg) {
-        log('E', msg, Colour.RED);
+        formatedLog('E', msg, Colour.RED);
     }
     public static void todo(String msg) {
-        log('T', msg, Colour.ORANGE);
+        formatedLog('T', msg, Colour.ORANGE);
     }
 
-    private static void log(char sym, String msg, Colour c){
+    public static void formatedLog(char sym, String msg, Colour c){
         System.out.println(c.toAnsiCode() + "[" + sym + "] " + msg + Colour.RESET.toAnsiCode());
     }
 
