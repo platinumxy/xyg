@@ -11,19 +11,17 @@ public class blobObj implements baseObj {
         this.content = content;
     }
 
-    public String getString() {
+    public String getObjContent() {
         return this.content;
     }
 
-    public String getName() {
-        return this.name;
-    }
+    public String getName() { return this.name; }
 
     public String getObjectType() {
         return "blob";
     }
 
     public boolean save(Path objPath) {
-        return objUtils.saveObj(objPath, this);
+        return this.saveRaw(objPath);
     }
 }
