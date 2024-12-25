@@ -7,6 +7,8 @@ public class blobObj implements baseObj {
     private final String content;
 
     public blobObj(String name, String content) {
+        assert name != null && content != null : "Cannot create blob with null values";
+        assert !name.isEmpty() : "Cannot create blob without a  name";
         this.name = name;
         this.content = content;
     }

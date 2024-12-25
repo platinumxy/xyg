@@ -1,16 +1,18 @@
 package fileobjects;
 
 import hashing.Sha256;
+import logging.Logger;
 
 import java.nio.file.Path;
 import java.util.Set;
-import java.util.logging.Logger;
 
 public class treeObj implements baseObj {
     private final Set<baseObj> children;
     private final String name;
 
     public treeObj(String name, Set<baseObj> children) {
+        assert name != null && children != null :
+                "Cannot create tree with null values, provide empty name and children instead";
         this.name = name;
         this.children = children;
     }
@@ -31,6 +33,8 @@ public class treeObj implements baseObj {
         for (baseObj child : this.children) {
             sb.append("000000 "); // reserved for future use
             sb.append(child.getObjectType());
+            sb.append(" ");
+            sb.append(child.getHash());
             sb.append("\t");
             sb.append(child.getName());
             sb.append("\n");
@@ -46,8 +50,8 @@ public class treeObj implements baseObj {
 
     public boolean save(Path objPath) {
         for (baseObj child : this.children) {
-            if (!child.save(objPath)) { // todo improve error management
-                Logger.getGlobal().severe("Failed to save child " + child.getName());
+            if (!child.save(objPath)) {
+                Logger.error("Failed to save child " + child.getName());
                 return false;
             }
         }

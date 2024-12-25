@@ -1,5 +1,7 @@
 package fileobjects;
 
+import logging.Logger;
+
 import java.nio.file.Path;
 
 public class commitObj implements baseObj {
@@ -20,6 +22,10 @@ public class commitObj implements baseObj {
         this(tree, new String[]{parentSha}, author, commiter, message);
     }
     public commitObj(treeObj tree, String[] parentSha, String author, String commiter, String message) {
+        assert tree != null && parentSha != null && author != null && commiter != null && message != null :
+                "Cannot create commit with null values";
+        assert !(author.isEmpty() && commiter.isEmpty()) : "Cannot create commit without an author or commiter";
+        assert !message.isEmpty() : "Cannot create commit without a message";
         this.tree = tree;
         this.parentSha = parentSha;
         this.author = author;
@@ -61,6 +67,10 @@ public class commitObj implements baseObj {
     }
 
     public boolean save(Path objPath) {
-        return this.tree.save(objPath) && this.saveRaw(objPath);
+        if (!this.tree.save(objPath)) {
+            Logger.error("Failed to save tree object");
+            return false;
+        }
+        return this.saveRaw(objPath);
     }
 }
