@@ -5,6 +5,6 @@ public enum InitResult {
     INVALID_PERMISSIONS,
     PATH_NOT_FOUND,
     PROJECT_EXISTS,
-    INVALID_PATH,
+    INVALID_PATH,   
     UNKNOWN_ERROR
 }

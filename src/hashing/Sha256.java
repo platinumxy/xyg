@@ -1,5 +1,6 @@
 package hashing;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -27,14 +28,40 @@ public class Sha256 {
      * @param data hashes provided string
      */
     public Sha256(String data) {
-        this.hash = hashData(data.getBytes());
+        this(data.getBytes());
     }
 
     /**
      * @param data hashes provided bytes
      */
     public Sha256(byte[] data) {
-        this.hash = hashData(data);
+        this(data, false);
+    }
+
+    public Sha256(byte[] hash, boolean raw) {
+        if (!raw) {
+            this.hash = hashData(hash);
+            return;
+        }
+
+        int[] temp = new int[hash.length / 4];
+        ByteBuffer buffer = ByteBuffer.wrap(hash);
+        for (int i = 0; i < temp.length; i++) {
+            temp[i] = buffer.getInt();
+        }
+        this.hash = temp;
+    }
+
+    public Sha256(int[] hash, boolean raw) {
+        if (raw) {
+            this.hash = hash;
+            return;
+        }
+        ByteBuffer buffer = ByteBuffer.allocate(hash.length * 4);
+        for (int value : hash) {
+            buffer.putInt(value);
+        }
+        this.hash = hashData(buffer.array());
     }
 
     /**
@@ -61,6 +88,14 @@ public class Sha256 {
      */
     public int[] getHash() {
         return hash;
+    }
+
+    public byte[] getHashBytes() {
+        ByteBuffer buffer = ByteBuffer.allocate(hash.length * 4);
+        for (int value : hash) {
+            buffer.putInt(value);
+        }
+        return buffer.array();
     }
 
     private int[] hashData(byte[] data) {

@@ -4,24 +4,24 @@ import logging.Logger;
 
 import java.nio.file.Path;
 
-public class commitObj implements baseObj {
-    private final treeObj tree;
+public class CommitObj implements BaseObj {
+    private final TreeObj tree;
     private final String[] parentSha;
     private final String author;
     private final String commiter;
     private final String message;
     private final long unixTimestamp;
 
-    public commitObj(treeObj tree, String parentSha, String author, String message) {
+    public CommitObj(TreeObj tree, String parentSha, String author, String message) {
         this(tree, new String[]{parentSha}, author, author,  message);
     }
-    public commitObj(treeObj tree, String[] parentSha, String author, String message) {
+    public CommitObj(TreeObj tree, String[] parentSha, String author, String message) {
         this(tree, parentSha, author, author,  message);
     }
-    public commitObj(treeObj tree, String parentSha, String author, String commiter, String message) {
+    public CommitObj(TreeObj tree, String parentSha, String author, String commiter, String message) {
         this(tree, new String[]{parentSha}, author, commiter, message);
     }
-    public commitObj(treeObj tree, String[] parentSha, String author, String commiter, String message) {
+    public CommitObj(TreeObj tree, String[] parentSha, String author, String commiter, String message) {
         assert tree != null && parentSha != null && author != null && commiter != null && message != null :
                 "Cannot create commit with null values";
         assert !(author.isEmpty() && commiter.isEmpty()) : "Cannot create commit without an author or commiter";

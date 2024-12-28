@@ -2,11 +2,11 @@ package fileobjects;
 
 import java.nio.file.Path;
 
-public class blobObj implements baseObj {
+public class BlobObj implements BaseObj {
     private final String name;
     private final String content;
 
-    public blobObj(String name, String content) {
+    public BlobObj(String name, String content) {
         assert name != null && content != null : "Cannot create blob with null values";
         assert !name.isEmpty() : "Cannot create blob without a  name";
         this.name = name;

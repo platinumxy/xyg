@@ -48,4 +48,17 @@ class Sha256Test {
             assert (Arrays.equals(shaHash, realHash));
         }
     }
+
+    @Test
+    void raw_creation() {
+        for (int i = 0; i < 100_000; i++) {
+                byte[] data = new byte[(int) (Math.random() * 100)];
+                for (int j = 0; j < data.length; j++) {
+                    data[j] = (byte) (Math.random() * 256);
+                }
+                Sha256 sha256 = new Sha256(data);
+                Sha256 sha256Raw = new Sha256(sha256.getHash(), true);
+                assert (Arrays.equals(sha256.getHash(), sha256Raw.getHash()));
+        }
+    }
 }

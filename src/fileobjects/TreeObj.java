@@ -6,21 +6,21 @@ import logging.Logger;
 import java.nio.file.Path;
 import java.util.Set;
 
-public class treeObj implements baseObj {
-    private final Set<baseObj> children;
+public class TreeObj implements BaseObj {
+    private final Set<BaseObj> children;
     private final String name;
 
-    public treeObj(String name, Set<baseObj> children) {
+    public TreeObj(String name, Set<BaseObj> children) {
         assert name != null && children != null :
                 "Cannot create tree with null values, provide empty name and children instead";
         this.name = name;
         this.children = children;
     }
 
-    public void addChild(baseObj child) { this.children.add(child); }
+    public void addChild(BaseObj child) { this.children.add(child); }
 
-    public baseObj getChild(Sha256 sha) {
-        for (baseObj child : this.children) {
+    public BaseObj getChild(Sha256 sha) {
+        for (BaseObj child : this.children) {
             if (sha.equals(child.getHash())) {
                 return child;
             }
@@ -30,7 +30,7 @@ public class treeObj implements baseObj {
 
     public String getObjContent() {
         StringBuilder sb = new StringBuilder();
-        for (baseObj child : this.children) {
+        for (BaseObj child : this.children) {
             sb.append("000000 "); // reserved for future use
             sb.append(child.getObjectType());
             sb.append(" ");
@@ -49,7 +49,7 @@ public class treeObj implements baseObj {
     }
 
     public boolean save(Path objPath) {
-        for (baseObj child : this.children) {
+        for (BaseObj child : this.children) {
             if (!child.save(objPath)) {
                 Logger.error("Failed to save child " + child.getName());
                 return false;

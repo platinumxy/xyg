@@ -4,9 +4,9 @@ import hashing.Sha256;
 
 import java.nio.file.Path;
 
-import static fileobjects.fileUtils.getShaPath;
+import static fileobjects.FileUtils.getShaPath;
 
-public interface baseObj {
+public interface BaseObj {
     String getName();
     String getObjContent();
     String getObjectType();
@@ -30,7 +30,7 @@ public interface baseObj {
      * Save the object to the object store without care for its children. Should be called with caution.
      */
     default boolean saveRaw(Path objPath) {
-        return fileUtils.writeToFile(
+        return FileUtils.writeToFile(
                 getShaPath(objPath, this.getHash()),
                 this.generateObjectString());
     }
