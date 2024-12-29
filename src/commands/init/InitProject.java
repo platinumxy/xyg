@@ -1,5 +1,6 @@
 package commands.init;
 
+import commands.stagingmanager.StagingEnvironment;
 import logging.Logger;
 
 import java.io.BufferedWriter;
@@ -36,6 +37,8 @@ public class InitProject {
             return InitResult.INVALID_PERMISSIONS;
         } else if (!createDirectories(projPath) || !createHeadFile(projPath) || !projectSetupCorrectly(projPath)) {
             return InitResult.UNKNOWN_ERROR;
+        } else if (!createStagingArea(projPath)) {
+            return InitResult.COULD_NOT_CREATE_STAGING_AREA;
         }
         return InitResult.SUCCESS;
     }
@@ -56,9 +59,14 @@ public class InitProject {
                 writer.close();
                 return true;
             }
-
         } catch (Exception _e) { /*...*/ }
         return false;
+    }
+
+    private static boolean createStagingArea(Path projPath) {
+        Path stagePath = projPath.resolve("index");
+        StagingEnvironment stage = new StagingEnvironment();
+        return stage.saveIndex(stagePath);
     }
 
     private static boolean projectSetupCorrectly(Path proj_path) {

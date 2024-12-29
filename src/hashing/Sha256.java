@@ -9,6 +9,8 @@ import java.util.Arrays;
  * and code from <a href="https://rosettacode.org/wiki/SHA-256#Java">Rosetta code</a>
  */
 public class Sha256 {
+    public static final Sha256 ZERO_HASH = new Sha256(new int[] { 0, 0, 0, 0, 0, 0, 0, 0 }, true);
+
     public static final int BLOCK_SIZE = 64;
     private static final int[] INIT_HASH = new int[] { 0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
             0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19 };
@@ -96,6 +98,10 @@ public class Sha256 {
             buffer.putInt(value);
         }
         return buffer.array();
+    }
+
+    public boolean equals(Sha256 other) {
+        return Arrays.equals(hash, other.hash);
     }
 
     private int[] hashData(byte[] data) {

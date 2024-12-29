@@ -15,10 +15,22 @@ public class StagingEnvironment {
 
     private final Set<StagedFile> stagedFiles;
 
-    public StagingEnvironment() { stagedFiles = Set.of(); }
+    public StagingEnvironment() { stagedFiles = new HashSet<>(); }
     public StagingEnvironment(Set<StagedFile> stagedFiles) { this.stagedFiles = stagedFiles; }
     public StagingEnvironment(Path indexFile) throws IllegalArgumentException {
         this.stagedFiles = loadIndex(indexFile);
+    }
+
+    public void addToIndex(StagedFile file) {
+        stagedFiles.add(file);
+    }
+
+    public void removeFromIndex(StagedFile file) {
+        stagedFiles.remove(file);
+    }
+
+    public Set<StagedFile> getStagedFiles() {
+        return stagedFiles;
     }
 
     private static Set<StagedFile> loadIndex(Path indexPath) throws IllegalArgumentException {
@@ -53,7 +65,13 @@ public class StagingEnvironment {
             long lastModified = buffer.getLong();
             offset += 8;
 
-            staged.add(new StagedFile(Path.of(new String(pathBytes)), new Sha256(hashBytes, true), lastModified));
+            // We can assume that no file results in a all zero hash and we can interpret it as null
+            Sha256 hash = new Sha256(hashBytes, true);
+            if (hash.equals(Sha256.ZERO_HASH)) {
+                hash = null;
+            }
+            StagedFile stagedFile = new StagedFile(Path.of(new String(pathBytes)), hash, lastModified);
+            staged.add(stagedFile);
         }
         return staged;
     }

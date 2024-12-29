@@ -20,7 +20,7 @@ public class CommandManager {
     private static int init(Path cwd, String[] args) {
         if (args.length != 0) {
             Logger.error("Invalid number of arguments for init");
-            return 4;
+            return 5;
         }
         return switch (InitProject.init(cwd)) {
             case SUCCESS -> {
@@ -39,9 +39,13 @@ public class CommandManager {
                 Logger.warn(" xyg project already exits at " + cwd);
                 yield 3;
             }
+            case COULD_NOT_CREATE_STAGING_AREA -> {
+                Logger.error("Error initializing repository: Could not create staging area");
+                yield 4;
+            }
             case UNKNOWN_ERROR -> {
                 Logger.error("An unknown error occurred while initializing repository");
-                yield 4;
+                yield 5;
             }
         };
     }
